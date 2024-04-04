@@ -9,4 +9,8 @@ export const ENDPOINTS = {
     DEFAULT: "/book",
     DETAIL: "/book/:id",
   },
+  AUTH: {
+    SIGNIN: "/auth/signin",
+    SIGNUP: "/auth/signup",
+  },
 };
