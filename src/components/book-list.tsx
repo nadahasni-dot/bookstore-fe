@@ -1,14 +1,13 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import React, { ChangeEventHandler, useState } from "react";
 import InfiniteBook from "./book/infinite-book";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { debounce } from "lodash";
-
-const queryClient = new QueryClient();
+import { queryClient } from "@/lib/query-client";
 
 function BookList() {
   const [searchQuery, setSearchQuery] = useState("");

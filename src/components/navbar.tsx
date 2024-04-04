@@ -1,6 +1,10 @@
+"use client";
+
 import React from "react";
 import { ModeToggle } from "@/components/ui/mode-togle";
-import CartDropdown from "@/components/cart-dropdown";
+import CartDropdown from "@/components/cart/cart-dropdown";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/lib/query-client";
 
 function Navbar() {
   return (
@@ -9,7 +13,9 @@ function Navbar() {
         <h1 className="text-xl font-semibold">Bookstore APP</h1>
         <div className="flex gap-4">
           <ModeToggle />
-          <CartDropdown />
+          <QueryClientProvider client={queryClient}>
+            <CartDropdown />
+          </QueryClientProvider>
         </div>
       </div>
     </nav>

@@ -2,6 +2,9 @@ import { CartItem } from "@/types/request/cart";
 import { LOCAL_STORAGE_KEY } from "@/constants/storage-key";
 import { Book } from "@/types/response/book";
 
+export const cartQueryKey = ["cart"];
+export const mutateCartKey = ["mutate-cart"];
+
 export async function getCart() {
   const cartString = localStorage.getItem(LOCAL_STORAGE_KEY.CART) || "null";
   const savedCart: CartItem[] | null = JSON.parse(cartString);
@@ -18,16 +21,15 @@ export async function reduceItemFromCart(id: number) {
 
   if (!savedCart) return [];
 
-  // find the item
-  let cart: CartItem[] = [];
-
   // get all saved cart item
+  let cart: CartItem[] = [];
   for (const item of savedCart) {
     cart.push(item);
   }
 
+  // find the item
   const itemIndex = cart.findIndex((i) => i.id === id);
-  if (itemIndex < 0) {
+  if (itemIndex >= 0) {
     const item = savedCart[itemIndex];
 
     // if item quantity 1 then remove
@@ -50,7 +52,7 @@ export async function reduceItemFromCart(id: number) {
   return savedCart;
 }
 
-export async function addToCart(book: Book) {
+export async function addToCart(book: CartItem) {
   const { id, cover, price, title } = book;
 
   const cartString = localStorage.getItem(LOCAL_STORAGE_KEY.CART) || "null";
@@ -60,7 +62,7 @@ export async function addToCart(book: Book) {
   let cart: CartItem[] = [];
 
   // if cart empty
-  if (!savedCart) {
+  if (!savedCart || savedCart.length < 1) {
     cart.push({
       id,
       cover,
@@ -81,7 +83,7 @@ export async function addToCart(book: Book) {
 
   // check if item already in cart
   const itemIndex = cart.findIndex((i) => i.id === book.id);
-  if (itemIndex < 0) {
+  if (itemIndex >= 0) {
     // add quantity +1
     cart[itemIndex] = {
       ...cart[itemIndex],
@@ -100,4 +102,5 @@ export async function addToCart(book: Book) {
 
   // save again to local storage
   localStorage.setItem(LOCAL_STORAGE_KEY.CART, JSON.stringify(cart));
+  return cart;
 }
