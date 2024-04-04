@@ -2,9 +2,9 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import React, { ChangeEventHandler, Suspense, useState } from "react";
-import InfiniteBook from "./book/infinite-book";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import InfiniteBook from "./infinite-book";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { debounce } from "lodash";
 import { queryClient } from "@/lib/query-client";

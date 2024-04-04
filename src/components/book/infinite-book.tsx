@@ -7,8 +7,6 @@ import { useInView } from "react-intersection-observer";
 import React, { useEffect } from "react";
 import BookCard from "./book-card";
 import BookListLoading from "./book-list-loading";
-import { GetBooks } from "@/types/response/book";
-import { AxiosResponse } from "axios";
 
 interface InfiniteBookParam {
   query?: string;

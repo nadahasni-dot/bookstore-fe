@@ -6,12 +6,15 @@ import CartDropdown from "@/components/cart/cart-dropdown";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query-client";
 import ProfileDropdown from "./auth/profile-dropdown";
+import Link from "next/link";
 
 function Navbar() {
   return (
     <nav className="border-b fixed z-10 dark:bg-slate-900 bg-slate-100 w-full">
       <div className="container px-4 md:px-8 flex justify-between my-4 items-center">
-        <h1 className="text-xl font-semibold">Bookstore APP</h1>
+        <Link href="/">
+          <h1 className="text-xl font-semibold">Bookstore APP</h1>
+        </Link>
         <div className="flex gap-4">
           <ModeToggle />
           <QueryClientProvider client={queryClient}>

@@ -1,4 +1,4 @@
-import BookList from "@/components/book-list";
+import BookList from "@/components/book/book-list";
 import Navbar from "@/components/navbar";
 import TagSelector from "@/components/tag/tag-selector";
 

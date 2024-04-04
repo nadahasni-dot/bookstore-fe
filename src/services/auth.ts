@@ -38,11 +38,13 @@ export const queryUserKey = ["user"];
 
 export function saveSession(user: User) {
   localStorage.setItem(LOCAL_STORAGE_KEY.USER, JSON.stringify(user));
-  localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, user.token);
+  localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, user?.token || "");
   return user;
 }
 
 export function getUser(): User | null {
+  if (typeof window === "undefined") return null;
+
   const userString = localStorage.getItem(LOCAL_STORAGE_KEY.USER);
 
   if (!userString) return null;
@@ -50,7 +52,30 @@ export function getUser(): User | null {
   return JSON.parse(userString);
 }
 
+export function updateUserData(user: User) {
+  const oldUserData = getUser();
+
+  if (!oldUserData) return null;
+
+  const newUserData = {
+    ...oldUserData,
+    ...user,
+  };
+
+  localStorage.setItem(LOCAL_STORAGE_KEY.USER, JSON.stringify(newUserData));
+
+  return newUserData;
+}
+
 export function clearSession() {
   localStorage.removeItem(LOCAL_STORAGE_KEY.USER);
   localStorage.removeItem(LOCAL_STORAGE_KEY.TOKEN);
 }
+
+export const getToken = () => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem(LOCAL_STORAGE_KEY.TOKEN) || "";
+  }
+
+  return "";
+};

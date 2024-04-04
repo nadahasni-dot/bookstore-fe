@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { PersonIcon, ExitIcon } from "@radix-ui/react-icons";
+import { PersonIcon, ExitIcon, ArchiveIcon } from "@radix-ui/react-icons";
 import { queryClient } from "@/lib/query-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -36,6 +36,10 @@ function ProfileDropdown() {
     router.push("/");
   };
 
+  const handleRedirectOrder = () => {
+    router.push("/order");
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -50,6 +54,14 @@ function ProfileDropdown() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuLabel>Remaining Points (${data.point})</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="flex justify-between"
+          onSelect={handleRedirectOrder}
+        >
+          <p>Your Orders</p>
+          <ArchiveIcon />
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="flex justify-between"

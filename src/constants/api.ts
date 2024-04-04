@@ -13,4 +13,9 @@ export const ENDPOINTS = {
     SIGNIN: "/auth/signin",
     SIGNUP: "/auth/signup",
   },
+  ORDER: {
+    DEFAULT: "/order",
+    DETAIL: "/order/:id",
+    CHECKOUT: "/order/checkout",
+  },
 };
