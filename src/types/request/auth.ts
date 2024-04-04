@@ -1,10 +1,10 @@
-export type SignInParam = {
+export interface SignInParam {
   email: string;
   password: string;
-};
+}
 
-export type SignUpParam = {
+export interface SignUpParam {
   name: string;
   email: string;
   password: string;
-};
+}

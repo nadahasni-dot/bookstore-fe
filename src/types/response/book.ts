@@ -1,7 +1,7 @@
 import { CommonResponse } from "../common";
 import { Tag } from "./tag";
 
-export type Book = {
+export interface Book {
   id: number;
   title: string;
   writer: string;
@@ -12,6 +12,6 @@ export type Book = {
   bookTags: {
     tag: Tag;
   }[];
-};
+}
 
 export type GetBooks = CommonResponse<Book[]>;

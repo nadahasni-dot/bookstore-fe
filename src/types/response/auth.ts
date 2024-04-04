@@ -1,6 +1,6 @@
 import { CommonResponse } from "../common";
 
-export type User = {
+export interface User {
   id: number;
   name: string;
   email: string;
@@ -9,6 +9,6 @@ export type User = {
   createdAt: string;
   updatedAt: string;
   token: string;
-};
+}
 
 export type SignInResponse = CommonResponse<User>;

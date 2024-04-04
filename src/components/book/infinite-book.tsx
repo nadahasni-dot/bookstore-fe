@@ -10,9 +10,9 @@ import BookListLoading from "./book-list-loading";
 import { GetBooks } from "@/types/response/book";
 import { AxiosResponse } from "axios";
 
-type InfiniteBookParam = {
+interface InfiniteBookParam {
   query?: string;
-};
+}
 
 function InfiniteBook({ query }: InfiniteBookParam) {
   const params = useSearchParams();
@@ -57,7 +57,9 @@ function InfiniteBook({ query }: InfiniteBookParam) {
           </React.Fragment>
         ))}
       </div>
-      <div ref={ref} className="text-center py-10">{isFetchingNextPage && "Loading..."}</div>
+      <div ref={ref} className="text-center py-10">
+        {isFetchingNextPage && "Loading..."}
+      </div>
     </>
   );
 }
