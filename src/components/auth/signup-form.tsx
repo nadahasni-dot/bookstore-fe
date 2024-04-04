@@ -1,5 +1,5 @@
 import React from "react";
-import { queryUserKey, saveSession, signUp } from "@/services/auth";
+import { queryUserKey, signUp } from "@/services/auth";
 import { toast } from "sonner";
 import { AxiosError, AxiosResponse } from "axios";
 import { SignInResponse } from "@/types/response/auth";
