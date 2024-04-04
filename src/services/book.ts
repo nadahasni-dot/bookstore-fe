@@ -1,17 +1,14 @@
 import { ENDPOINTS } from "@/constants/api";
 import { API } from "@/lib/api-client";
 import { GetBooksParam } from "@/types/request/book";
+import { GetBooks } from "@/types/response/book";
+import { AxiosResponse } from "axios";
 
-export function getBooks({
-  page = 1,
-  perPage = 10,
-  query,
-  tag,
-}: GetBooksParam) {
+export function getBooks({ perPage = 10, query, tag }: GetBooksParam) {
   const url = ENDPOINTS.BOOK.DEFAULT;
 
   const params = new URLSearchParams();
-  params.set("page", page.toString());
+
   params.set("perPage", perPage.toString());
 
   if (query) {
@@ -19,14 +16,26 @@ export function getBooks({
   }
 
   if (tag) {
-    params.set("tag", tag.toString());
+    params.set("tags", tag);
   }
 
   return {
-    queryKey: [url, page, perPage, query, tag],
-    queryFn: () =>
-      API.get(url, {
+    initialPageParam: 1,
+    queryKey: [url, query, tag],
+    queryFn: async ({ pageParam = 1 }) => {
+      params.set("page", pageParam.toString());
+
+      return API.get(url, {
         params,
-      }),
+      });
+    },
+    getNextPageParam: (lastPage: AxiosResponse<GetBooks>) => {
+      const currentPage = Number(lastPage.data.meta?.page || "1");
+      const totalPage = lastPage.data.meta?.totalPage || 1;
+
+      if (currentPage < totalPage) return currentPage + 1;
+
+      return undefined;
+    },
   };
 }

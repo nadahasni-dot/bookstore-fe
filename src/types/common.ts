@@ -1,6 +1,7 @@
 export type Meta = {
-  page: number;
-  perPage: number;
+  page: string;
+  perPage: string;
+  totalPage: number;
 };
 
 export type CommonResponse<T> = {
