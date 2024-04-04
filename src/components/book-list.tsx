@@ -1,7 +1,7 @@
 "use client";
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import React, { ChangeEventHandler, useState } from "react";
+import React, { ChangeEventHandler, Suspense, useState } from "react";
 import InfiniteBook from "./book/infinite-book";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -44,7 +44,9 @@ function BookList() {
             <MagnifyingGlassIcon />
           </Button>
         </form>
-        <InfiniteBook query={searchQuery} />
+        <Suspense fallback={<></>}>
+          <InfiniteBook query={searchQuery} />
+        </Suspense>
       </div>
     </QueryClientProvider>
   );
