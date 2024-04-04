@@ -37,7 +37,7 @@ function CartDropdown() {
         <Button variant="outline" className="px-3">
           <div className="flex gap-2 items-center">
             <BackpackIcon />
-            <div className="px-[4px] py-[0.5px] rounded bg-blue-400 text-white text-xs">
+            <div className="px-[4px] py-[0.5px] rounded bg-blue-500 text-white text-xs">
               {data?.length || 0}
             </div>
           </div>
