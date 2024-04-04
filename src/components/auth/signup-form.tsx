@@ -1,5 +1,5 @@
 import React from "react";
-import { queryUserKey, saveSession, signIn } from "@/services/auth";
+import { queryUserKey, saveSession, signUp } from "@/services/auth";
 import { toast } from "sonner";
 import { AxiosError, AxiosResponse } from "axios";
 import { SignInResponse } from "@/types/response/auth";
@@ -21,32 +21,46 @@ import {
 import { z } from "zod";
 import { queryClient } from "@/lib/query-client";
 
-const formSchema = z.object({
-  email: z.string().min(2).max(50).email(),
-  password: z.string().min(6).max(50),
-});
+const formSchema = z
+  .object({
+    name: z.string().min(2).max(50),
+    email: z.string().min(4).max(50).email(),
+    password: z.string().min(6).max(50),
+    repeat_password: z.string().min(6).max(50),
+  })
+  .superRefine(({ repeat_password, password }, ctx) => {
+    if (repeat_password !== password) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["repeat_password"],
+        message: "The passwords did not match",
+      });
+    }
+  });
 
-function SignInForm() {
+function SignUpForm() {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      repeat_password: "",
     },
   });
 
   const { isPending, mutate } = useMutation({
-    ...signIn(),
+    ...signUp(),
     onSuccess: (res: AxiosResponse<SignInResponse>) => {
       queryClient.invalidateQueries({ queryKey: queryUserKey });
-      saveSession(res.data.data);
-      toast.success("Sign In success");
-      router.push("/");
+
+      toast.success("Sign Up success");
+      router.push("/auth/signin");
     },
     onError: (res: AxiosError<SignInResponse>) => {
-      toast.error(res.response?.data.message || "Sign In failed");
+      toast.error(res.response?.data.message || "Sign Up failed");
     },
   });
 
@@ -60,6 +74,19 @@ function SignInForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 max-w-xl w-full"
       >
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Name" type="name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
@@ -86,13 +113,30 @@ function SignInForm() {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="repeat_password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Repeat Password</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Repeat Password"
+                  type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button size="lg" type="submit" className="w-full" disabled={isPending}>
-          Sign In with Email
+          Sign Up
         </Button>
         <div className="flex gap-1 justify-center py-4">
-          <p>Do not have any account yet?</p>
-          <Link href="/auth/signup" className="text-blue-500">
-            Sign Up
+          <p>Already have an account?</p>
+          <Link href="/auth/signin" className="text-blue-500">
+            Sign In
           </Link>
         </div>
       </form>
@@ -100,4 +144,4 @@ function SignInForm() {
   );
 }
 
-export default SignInForm;
+export default SignUpForm;

@@ -13,8 +13,13 @@ import {
 import CartItem from "./cart-item";
 import { useQuery } from "@tanstack/react-query";
 import { cartQueryKey, getCart } from "@/services/cart";
+import { getUser } from "@/services/auth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function CartDropdown() {
+  const router = useRouter();
+
   const { data } = useQuery({
     queryKey: cartQueryKey,
     queryFn: () => getCart(),
@@ -29,6 +34,16 @@ function CartDropdown() {
     }
 
     return total;
+  };
+
+  const handleCheckout = () => {
+    const user = getUser();
+
+    if (!user) {
+      router.push("/auth/signin");
+      toast.info("Please Sign In to proceed checkout");
+      return;
+    }
   };
 
   return (
@@ -61,8 +76,9 @@ function CartDropdown() {
             </p>
           </div>
           <Button
-            disabled={!data || data.length < 1}
             variant="default"
+            onClick={handleCheckout}
+            disabled={!data || data.length < 1}
             className="w-full bg-blue-500 text-white font-semibold"
           >
             Checkout

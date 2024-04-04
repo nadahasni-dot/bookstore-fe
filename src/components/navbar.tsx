@@ -5,6 +5,7 @@ import { ModeToggle } from "@/components/ui/mode-togle";
 import CartDropdown from "@/components/cart/cart-dropdown";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query-client";
+import ProfileDropdown from "./auth/profile-dropdown";
 
 function Navbar() {
   return (
@@ -15,6 +16,7 @@ function Navbar() {
           <ModeToggle />
           <QueryClientProvider client={queryClient}>
             <CartDropdown />
+            <ProfileDropdown />
           </QueryClientProvider>
         </div>
       </div>
