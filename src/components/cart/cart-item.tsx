@@ -31,7 +31,7 @@ function CartItem({ cart }: { cart: CartItemProps }) {
     mutationFn: reduceItemFromCart,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: cartQueryKey });
-      toast.success("1 item quantity removed to cart");
+      toast.success("1 item quantity removed from cart");
     },
     onError: () => {
       toast.error("Failed removing item from cart");
