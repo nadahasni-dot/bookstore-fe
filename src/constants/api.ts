@@ -10,6 +10,8 @@ export const ENDPOINTS = {
     DETAIL: "/book/:id",
   },
   AUTH: {
+    API_SIGNIN: "/auth/api/signin",
+    API_SIGNOUT: "/auth/api/signout",
     SIGNIN: "/auth/signin",
     SIGNUP: "/auth/signup",
   },

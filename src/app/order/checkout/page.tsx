@@ -1,17 +1,15 @@
-"use client";
-
 import CheckoutDetail from "@/components/order/checkout-detail";
-import { getToken } from "@/services/auth";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import React, { useLayoutEffect } from "react";
+import React from "react";
 
 function Checkout() {
-  useLayoutEffect(() => {
-    const token = getToken();
-    if (token === "") {
-      redirect("/");
-    }
-  }, []);
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token");
+
+  if (!token) {
+    redirect("/auth/signin");
+  }
 
   return (
     <div className="flex-grow flex justify-center items-start container px-4 md:px-8 pt-24">

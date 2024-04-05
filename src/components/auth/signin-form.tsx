@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { queryUserKey, saveSession, signIn } from "@/services/auth";
 import { toast } from "sonner";

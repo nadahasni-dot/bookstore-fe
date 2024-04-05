@@ -1,19 +1,16 @@
-"use client";
-
+import AuthProvider from "@/components/auth/auth-provider";
 import SignUpForm from "@/components/auth/signup-form";
-import { queryClient } from "@/lib/query-client";
-import { getToken } from "@/services/auth";
-import { QueryClientProvider } from "@tanstack/react-query";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import React, { useLayoutEffect } from "react";
+import React from "react";
 
 function SignUp() {
-  useLayoutEffect(() => {
-    const token = getToken();
-    if (token !== "") {
-      redirect("/");
-    }
-  }, []);
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token");
+
+  if (token) {
+    redirect("/");
+  }
 
   return (
     <div className="flex flex-col justify-center items-center container px-4 md:px-8 flex-grow">
@@ -21,9 +18,9 @@ function SignUp() {
       <p className="text-sm mt-2 mb-10">
         Enter your name, email, and password below to create your account
       </p>
-      <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <SignUpForm />
-      </QueryClientProvider>
+      </AuthProvider>
     </div>
   );
 }

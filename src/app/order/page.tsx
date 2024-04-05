@@ -1,17 +1,16 @@
-"use client";
-
 import OrderList from "@/components/order/order-list";
-import { getToken } from "@/services/auth";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import React, { useLayoutEffect } from "react";
+
+import React from "react";
 
 function Order() {
-  useLayoutEffect(() => {
-    const token = getToken();
-    if (token === "") {
-      redirect("/");
-    }
-  }, []);
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token");
+
+  if (!token) {
+    redirect("/auth/signin");
+  }
 
   return (
     <>

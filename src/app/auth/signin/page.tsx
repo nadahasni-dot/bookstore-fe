@@ -1,20 +1,17 @@
-"use client";
+import React from "react";
 
-import React, { useLayoutEffect } from "react";
-
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/query-client";
 import SignInForm from "@/components/auth/signin-form";
-import { getToken } from "@/services/auth";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import AuthProvider from "@/components/auth/auth-provider";
 
 function SignIn() {
-  useLayoutEffect(() => {
-    const token = getToken();
-    if (token !== "") {
-      redirect("/");
-    }
-  }, []);
+  const cookiesStore = cookies();
+  const token = cookiesStore.get("token");
+
+  if (token) {
+    redirect("/");
+  }
 
   return (
     <div className="flex flex-col justify-center items-center container px-4 md:px-8 flex-grow">
@@ -22,9 +19,9 @@ function SignIn() {
       <p className="text-sm mt-2 mb-10">
         Start your session by providing valid credential
       </p>
-      <QueryClientProvider client={queryClient}>
+      <AuthProvider>
         <SignInForm />
-      </QueryClientProvider>
+      </AuthProvider>
     </div>
   );
 }

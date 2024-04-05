@@ -1,19 +1,31 @@
-import { ENDPOINTS } from "@/constants/api";
+import { BASE_URL, ENDPOINTS } from "@/constants/api";
 import { LOCAL_STORAGE_KEY } from "@/constants/storage-key";
 import { API } from "@/lib/api-client";
 import { SignInParam, SignUpParam } from "@/types/request/auth";
 import { User } from "@/types/response/auth";
+import axios from "axios";
 
 export function signIn() {
-  const url = ENDPOINTS.AUTH.SIGNIN;
+  const url = ENDPOINTS.AUTH.API_SIGNIN;
 
   return {
     mutationKey: [url],
     mutationFn: ({ email, password }: SignInParam) => {
-      return API.post(url, {
+      return axios.post(url, {
         email,
         password,
       });
+    },
+  };
+}
+
+export function signOut() {
+  const url = ENDPOINTS.AUTH.API_SIGNOUT;
+
+  return {
+    mutationKey: [url],
+    mutationFn: () => {
+      return axios.post(url);
     },
   };
 }
@@ -38,7 +50,8 @@ export const queryUserKey = ["user"];
 
 export function saveSession(user: User) {
   localStorage.setItem(LOCAL_STORAGE_KEY.USER, JSON.stringify(user));
-  localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, user?.token || "");
+  localStorage.setItem(LOCAL_STORAGE_KEY.TOKEN, user.token || "");
+
   return user;
 }
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { clearSession, getUser, queryUserKey } from "@/services/auth";
-import { useQuery } from "@tanstack/react-query";
+import { clearSession, getUser, queryUserKey, signOut } from "@/services/auth";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
 import {
   DropdownMenu,
@@ -16,6 +16,8 @@ import { PersonIcon, ExitIcon, ArchiveIcon } from "@radix-ui/react-icons";
 import { queryClient } from "@/lib/query-client";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
+import { CommonResponse } from "@/types/common";
 
 function ProfileDropdown() {
   const router = useRouter();
@@ -25,15 +27,24 @@ function ProfileDropdown() {
     queryFn: () => getUser(),
   });
 
+  const { isPending, mutate } = useMutation({
+    ...signOut(),
+    onSuccess: () => {
+      clearSession();
+      queryClient.invalidateQueries({ queryKey: queryUserKey });
+
+      toast.success("Sign Out success");
+      router.push("/");
+    },
+    onError: (res: AxiosError<CommonResponse<null>>) => {
+      toast.error(res.response?.data.message || "Sign Out failed");
+    },
+  });
+
   if (!data) return <></>;
 
   const handleSignOut = () => {
-    clearSession();
-    queryClient.invalidateQueries({ queryKey: queryUserKey });
-
-    toast.success("Sign Out success");
-
-    router.push("/");
+    mutate();
   };
 
   const handleRedirectOrder = () => {
@@ -66,6 +77,7 @@ function ProfileDropdown() {
         <DropdownMenuItem
           className="flex justify-between"
           onSelect={handleSignOut}
+          disabled={isPending}
         >
           <p>Sign Out</p>
           <ExitIcon />
