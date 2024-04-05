@@ -1,6 +1,5 @@
 import { CartItem } from "@/types/request/cart";
 import { LOCAL_STORAGE_KEY } from "@/constants/storage-key";
-import { Book } from "@/types/response/book";
 
 export const cartQueryKey = ["cart"];
 export const mutateCartKey = ["mutate-cart"];
@@ -103,4 +102,10 @@ export async function addToCart(book: CartItem) {
   // save again to local storage
   localStorage.setItem(LOCAL_STORAGE_KEY.CART, JSON.stringify(cart));
   return cart;
+}
+
+export function clearCart() {
+  if (typeof window === "undefined") return;
+
+  localStorage.removeItem(LOCAL_STORAGE_KEY.CART);
 }

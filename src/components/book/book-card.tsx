@@ -37,7 +37,7 @@ function BookCard({ book }: { book: Book }) {
   };
 
   return (
-    <Card key={book.id} className="h-64 w-full overflow-hidden relative">
+    <Card key={book.id} className="min-h-64 w-full overflow-hidden relative">
       <div className="h-full bg-cover overflow-hidden absolute">
         <Image alt={book.title} src={book.cover} height={600} width={600} />
       </div>
@@ -53,7 +53,7 @@ function BookCard({ book }: { book: Book }) {
               <Badge
                 key={tag.tag.id}
                 variant="secondary"
-                className="text-xs bg-white/20"
+                className="text-xs text-white bg-white/20"
               >
                 {tag.tag.name.toUpperCase()}
               </Badge>

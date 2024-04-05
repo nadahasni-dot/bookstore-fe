@@ -44,6 +44,8 @@ function CartDropdown() {
       toast.info("Please Sign In to proceed checkout");
       return;
     }
+
+    router.push("/order/checkout");
   };
 
   return (

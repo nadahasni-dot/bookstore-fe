@@ -48,7 +48,7 @@ function InfiniteOrder() {
 
   return (
     <>
-      <div className="flex flex-col gap-4 mt-16">
+      <div className="flex flex-col gap-4">
         {data?.pages.map((group, i) => (
           <React.Fragment key={i}>
             {group.data.data.map((order) => (

@@ -4,6 +4,7 @@ import { CancelOrderParam } from "@/types/request/order";
 import { GetOrders } from "@/types/response/order";
 import { AxiosResponse } from "axios";
 import { getToken } from "./auth";
+import { CartItem } from "@/types/request/cart";
 
 export function getOrders({ perPage = 10 }) {
   const url = ENDPOINTS.ORDER.DEFAULT;
@@ -45,6 +46,20 @@ export function cancelOrder() {
       const token = getToken();
 
       return API.put(url, null, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    },
+  };
+}
+
+export function checkout() {
+  return {
+    mutationKey: ["checkout"],
+    mutationFn: (cartItems: CartItem[]) => {
+      const url = ENDPOINTS.ORDER.CHECKOUT;
+      const token = getToken();
+
+      return API.post(url, cartItems, {
         headers: { Authorization: `Bearer ${token}` },
       });
     },
