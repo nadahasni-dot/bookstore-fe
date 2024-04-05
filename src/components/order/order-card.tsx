@@ -42,7 +42,7 @@ import dayjs from "dayjs";
 function OrderCard({ order }: { order: Order }) {
   const { id: orderId } = order;
 
-  const { isPending, mutate } = useMutation({
+  const { isPending, mutate, isSuccess } = useMutation({
     ...cancelOrder(),
     onSuccess: (res: AxiosResponse<CancelOrderResponse>) => {
       queryClient.invalidateQueries({
@@ -107,7 +107,7 @@ function OrderCard({ order }: { order: Order }) {
       <CardFooter className="flex justify-end">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="outline" disabled={isPending}>
+            <Button variant="outline" disabled={isPending || isSuccess}>
               Cancel Order
             </Button>
           </AlertDialogTrigger>
@@ -120,8 +120,8 @@ function OrderCard({ order }: { order: Order }) {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-              <AlertDialogAction disabled={isPending} onClick={handleCancel}>
+              <AlertDialogCancel disabled={isPending || isSuccess}>Cancel</AlertDialogCancel>
+              <AlertDialogAction disabled={isPending || isSuccess} onClick={handleCancel}>
                 Continue
               </AlertDialogAction>
             </AlertDialogFooter>

@@ -48,7 +48,7 @@ function CheckoutCard() {
     queryFn: () => getCart(),
   });
 
-  const { isPending, mutate } = useMutation({
+  const { isPending, mutate, isSuccess } = useMutation({
     ...checkout(),
     onSuccess: (res: AxiosResponse<CheckoutResponse>) => {
       const oldUserData = getUser();
@@ -88,7 +88,14 @@ function CheckoutCard() {
   };
 
   const handleCheckout = () => {
-    if (data) mutate(data);
+    if (!data) return;
+
+    const checkoutItems = data.map((item) => ({
+      bookId: item.id,
+      quantity: item.quantity,
+    }));
+
+    if (data) mutate(checkoutItems);
   };
 
   return (
@@ -136,7 +143,11 @@ function CheckoutCard() {
       <CardFooter className="flex justify-end">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button disabled={isPending} variant="default" size="lg">
+            <Button
+              disabled={isPending || isSuccess}
+              variant="default"
+              size="lg"
+            >
               Checkout
             </Button>
           </AlertDialogTrigger>
@@ -149,8 +160,13 @@ function CheckoutCard() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
-              <AlertDialogAction disabled={isPending} onClick={handleCheckout}>
+              <AlertDialogCancel disabled={isPending || isSuccess}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                disabled={isPending || isSuccess}
+                onClick={handleCheckout}
+              >
                 Proceed Checkout
               </AlertDialogAction>
             </AlertDialogFooter>

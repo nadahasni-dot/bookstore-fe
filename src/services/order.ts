@@ -1,10 +1,9 @@
 import { ENDPOINTS } from "@/constants/api";
 import { API } from "@/lib/api-client";
-import { CancelOrderParam } from "@/types/request/order";
+import { CancelOrderParam, CheckoutItem } from "@/types/request/order";
 import { GetOrders } from "@/types/response/order";
 import { AxiosResponse } from "axios";
 import { getToken } from "./auth";
-import { CartItem } from "@/types/request/cart";
 
 export function getOrders({ perPage = 10 }) {
   const url = ENDPOINTS.ORDER.DEFAULT;
@@ -55,11 +54,11 @@ export function cancelOrder() {
 export function checkout() {
   return {
     mutationKey: ["checkout"],
-    mutationFn: (cartItems: CartItem[]) => {
+    mutationFn: (checkoutItems: CheckoutItem[]) => {
       const url = ENDPOINTS.ORDER.CHECKOUT;
       const token = getToken();
 
-      return API.post(url, cartItems, {
+      return API.post(url, checkoutItems, {
         headers: { Authorization: `Bearer ${token}` },
       });
     },
